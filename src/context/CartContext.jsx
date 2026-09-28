@@ -66,6 +66,14 @@ function CartProvider({ children }) {
         )
     }
 
+    function getItemQuantity(itemId) {
+        const productoEncontrado = cart.find(
+            (producto) => producto.id === itemId,
+        )
+
+        return productoEncontrado?.quantity ?? 0
+    }
+
     const totalItems = cart.reduce(
         (acumulador, producto) =>
             acumulador + producto.quantity,
@@ -84,6 +92,7 @@ function CartProvider({ children }) {
         removeItem,
         clear,
         isInCart,
+        getItemQuantity,
         totalItems,
         totalPrice,
     }

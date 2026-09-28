@@ -95,6 +95,22 @@
     color: #f8fbca;
 }
 
+.detalle__en-carrito {
+    margin: 0.75rem 0 0;
+    color: #651c32;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.detalle__stock-completo {
+    margin: 1.5rem 0 0;
+    padding: 1rem;
+    border: 1px solid #651c32;
+    color: #651c32;
+    font-weight: 800;
+    text-align: center;
+}
+
 @media (max-width: 760px) {
     .detalle {
         grid-template-columns: 1fr;

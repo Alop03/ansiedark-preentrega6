@@ -4,10 +4,15 @@ import { useCart } from "../context/useCart"
 import ItemCount from "./ItemCount"
 import "./ItemDetail.css"
 
-// Presenta el producto y conecta la selección con el carrito global.
+// Presenta el producto y controla su incorporación al carrito global.
 function ItemDetail({ item }) {
     const [mensaje, setMensaje] = useState("")
-    const { addItem, isInCart } = useCart()
+
+    const {
+        addItem,
+        isInCart,
+        getItemQuantity,
+    } = useCart()
 
     const {
         name,
@@ -17,6 +22,10 @@ function ItemDetail({ item }) {
         stock,
         description,
     } = item
+
+    const cantidadEnCarrito = getItemQuantity(item.id)
+    const stockRestante = stock - cantidadEnCarrito
+    const productoAgotadoEnCarrito = stockRestante === 0
 
     const precioFormateado = new Intl.NumberFormat("es-UY", {
         style: "currency",
@@ -34,11 +43,11 @@ function ItemDetail({ item }) {
             : "unidades"
 
         const textoAccion = productoYaAgregado
-            ? "actualizada en el carrito"
-            : "agregada al carrito"
+            ? "sumadas al carrito"
+            : "agregadas al carrito"
 
         setMensaje(
-            `${cantidad} ${textoUnidad} de ${name}: cantidad ${textoAccion}.`,
+            `${cantidad} ${textoUnidad} de ${name} ${textoAccion}.`,
         )
     }
 
@@ -73,11 +82,29 @@ function ItemDetail({ item }) {
                     Stock disponible: {stock}
                 </p>
 
-                <ItemCount
-                    initial={1}
-                    stock={stock}
-                    onAdd={agregarCantidad}
-                />
+                {cantidadEnCarrito > 0 && (
+                    <p className="detalle__en-carrito">
+                        En tu carrito: {cantidadEnCarrito}
+                    </p>
+                )}
+
+                {!productoAgotadoEnCarrito && (
+                    <ItemCount
+                        key={stockRestante}
+                        initial={1}
+                        stock={stockRestante}
+                        onAdd={agregarCantidad}
+                    />
+                )}
+
+                {productoAgotadoEnCarrito && (
+                    <p
+                        className="detalle__stock-completo"
+                        role="status"
+                    >
+                        Ya agregaste todo el stock disponible.
+                    </p>
+                )}
 
                 {mensaje && (
                     <div className="detalle__confirmacion">
