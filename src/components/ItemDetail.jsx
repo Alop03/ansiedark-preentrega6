@@ -1,10 +1,13 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
+import { useCart } from "../context/useCart"
 import ItemCount from "./ItemCount"
 import "./ItemDetail.css"
 
-// Presenta la información completa de una joya seleccionada.
+// Presenta el producto y conecta la selección con el carrito global.
 function ItemDetail({ item }) {
     const [mensaje, setMensaje] = useState("")
+    const { addItem, isInCart } = useCart()
 
     const {
         name,
@@ -22,16 +25,20 @@ function ItemDetail({ item }) {
     }).format(price)
 
     function agregarCantidad(cantidad) {
+        const productoYaAgregado = isInCart(item.id)
+
+        addItem(item, cantidad)
+
         const textoUnidad = cantidad === 1
             ? "unidad"
             : "unidades"
 
-        const textoAccion = cantidad === 1
-            ? "agregada"
-            : "agregadas"
+        const textoAccion = productoYaAgregado
+            ? "actualizada en el carrito"
+            : "agregada al carrito"
 
         setMensaje(
-            `${cantidad} ${textoUnidad} de ${name} ${textoAccion} al carrito.`,
+            `${cantidad} ${textoUnidad} de ${name}: cantidad ${textoAccion}.`,
         )
     }
 
@@ -73,12 +80,21 @@ function ItemDetail({ item }) {
                 />
 
                 {mensaje && (
-                    <p
-                        className="detalle__mensaje"
-                        role="status"
-                    >
-                        {mensaje}
-                    </p>
+                    <div className="detalle__confirmacion">
+                        <p
+                            className="detalle__mensaje"
+                            role="status"
+                        >
+                            {mensaje}
+                        </p>
+
+                        <Link
+                            className="detalle__ir-carrito"
+                            to="/cart"
+                        >
+                            Ver carrito
+                        </Link>
+                    </div>
                 )}
             </div>
         </article>

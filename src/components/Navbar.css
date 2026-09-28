@@ -67,6 +67,7 @@
 .carrito {
     position: relative;
     display: grid;
+    text-decoration: none;
     justify-self: end;
     width: 46px;
     height: 46px;

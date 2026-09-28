@@ -6,6 +6,7 @@ import {
 import Layout from "./components/Layout"
 import ItemListContainer from "./components/ItemListContainer"
 import ItemDetailContainer from "./components/ItemDetailContainer"
+import Cart from "./components/Cart"
 import NotFound from "./components/NotFound"
 import "./App.css"
 
@@ -35,6 +36,11 @@ function App() {
                 <Route
                     path="item/:itemId"
                     element={<ItemDetailContainer />}
+                />
+
+                <Route
+                    path="cart"
+                    element={<Cart />}
                 />
 
                 <Route

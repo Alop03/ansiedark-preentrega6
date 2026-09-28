@@ -1,24 +1,35 @@
 import { FiShoppingBag } from "react-icons/fi"
+import { Link } from "react-router-dom"
+import { useCart } from "../context/useCart"
 
-// Representa el acceso visual al futuro carrito de compras.
+// Muestra la cantidad total de unidades guardadas en el carrito global.
 function CartWidget() {
-    const cantidadProductos = 0
+    const { totalItems } = useCart()
+
+    const textoAccesible = totalItems === 1
+        ? "Carrito con 1 producto"
+        : `Carrito con ${totalItems} productos`
 
     return (
-        <button
+        <Link
             className="carrito"
-            type="button"
-            aria-label={`Carrito con ${cantidadProductos} productos`}
+            to="/cart"
+            aria-label={textoAccesible}
         >
             <FiShoppingBag
                 className="carrito__icono"
                 aria-hidden="true"
             />
 
-            <span className="carrito__cantidad">
-                {cantidadProductos}
-            </span>
-        </button>
+            {totalItems > 0 && (
+                <span
+                    className="carrito__cantidad"
+                    aria-live="polite"
+                >
+                    {totalItems}
+                </span>
+            )}
+        </Link>
     )
 }
 
